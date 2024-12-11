@@ -17,7 +17,6 @@ def get_antinodes(x1, y1, x2, y2):
 
 res = set()
 
-
 for freq in antennas:
     lst = antennas[freq]
     for i in range(len(lst)):
