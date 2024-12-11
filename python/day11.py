@@ -21,6 +21,5 @@ for _ in range(T):
         else:
             temp[num*2024] += cnt[num]
     cnt = temp
-    # print(cnt)
 
 print(sum(cnt.values()))
