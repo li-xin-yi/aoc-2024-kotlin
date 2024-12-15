@@ -1,5 +1,3 @@
-from collections import Counter
-from functools import reduce
 with open('../inputs/day14.txt') as f:
     lines = f.readlines()
 
