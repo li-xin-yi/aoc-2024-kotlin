@@ -2,6 +2,7 @@
 with open("../inputs/day13.txt") as f:
     lines = f.readlines()
 
+B = 10000000000000
 prizes = []
 for i in range(0, len(lines), 4):
     x, y = lines[i].strip().split(': ')[-1].split(', ')
@@ -9,16 +10,26 @@ for i in range(0, len(lines), 4):
     x, y = lines[i+1].strip().split(': ')[-1].split(', ')
     xb, yb = int(x.split('+')[-1]), int(y.split('+')[-1])
     x, y = lines[i+2].strip().split(': ')[-1].split(', ')
-    x0, y0 = int(x.split('=')[-1]), int(y.split('=')[-1])
+    x0, y0 = int(x.split('=')[-1]) + B, int(y.split('=')[-1]) + B
     prizes.append((xa, ya, xb, yb, x0, y0))
 
 
 def solve(xa, ya, xb, yb, x0, y0):
-    res = float('inf')
-    for i in range(min(x0//xa + 1, 101)):
-        if y0 - i*ya >= 0 and (x0 - i*xa) % xb == 0 and (y0 - i*ya) % yb == 0 and (y0 - i*ya) // yb == (x0 - i*xa) // xb:
-            res = min(res, i*3 + (x0 - i*xa) // xb)
-    return res
+    # a * xa + b * xb = x0
+    # a * ya + b * yb = y0
+    # D = xa * yb - xb * ya
+    # a = (x0 * yb - xb * y0) / D
+    # b = (xa * y0 - x0 * ya) / D
+    D = xa * yb - xb * ya
+    if D == 0:
+        return float('inf')
+    if (x0 * yb - xb * y0) % D != 0 or (xa * y0 - x0 * ya) % D != 0:
+        return float('inf')
+    a = (x0 * yb - xb * y0) // D
+    b = (xa * y0 - x0 * ya) // D
+    if a < 0 or b < 0:
+        return float('inf')
+    return a*3 + b
 
 
 res = 0
