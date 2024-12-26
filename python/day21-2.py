@@ -74,20 +74,18 @@ def move(start, end, degree):
             if grid[pos[start][0] + sign * (i+1)][pos[start][1]] == '':
                 cand = [left+right+'A']
                 break
-    if degree == 2:
-        return min(cand, key=len)
+    if degree == 25:
+        return min(len(c) for c in cand)
     else:
         cand = ['A' + c for c in cand]
-        return min([''.join(move(c[i], c[i+1], degree+1) for i in range(len(c)-1)) for c in cand], key=len)
+        return min([sum(move(c[i], c[i+1], degree+1) for i in range(len(c)-1)) for c in cand])
 
 def get_instructions(input):
-    res = []
+    res = 0
     input = 'A' + input
     for i in range(len(input)-1):
-        res.append(move(input[i], input[i+1], 0))
-
-    
-    return ''.join(res)
+        res += move(input[i], input[i+1], 0)
+    return res
 
 
 with open('../inputs/day21.txt') as f:
@@ -97,6 +95,6 @@ res = 0
 for line in lines:
     line = line.strip()
     instr = get_instructions(line)
-    res += len(instr) * int(line[:-1])
+    res += instr * int(line[:-1])
 
 print(res)
